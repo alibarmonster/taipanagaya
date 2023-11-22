@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { comparePassword, hashPassword } from '../helpers/bcrypt';
 import { RegisterType } from '../utils';
+import jwt, { Secret } from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 
@@ -53,7 +54,7 @@ const register = async (req: Request, res: Response) => {
 
 const login = async (req: Request, res: Response) => {
   try {
-    const { username, password } = req.body;
+    const { username, password }: RegisterType = req.body;
 
     if (!username) {
       res.status(400).json({
@@ -87,9 +88,25 @@ const login = async (req: Request, res: Response) => {
       });
     }
 
+    const secretKey: Secret = String(process.env.ACCESS_TOKEN_KEY);
+    const refreshKey: Secret = String(process.env.REFRESH_TOKEN_KEY);
+    const accessToken = jwt.sign(existingUsername, secretKey, {
+      expiresIn: '20s',
+    });
+
+    const refreshToken = jwt.sign(existingUsername, refreshKey, {
+      expiresIn: '1d',
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     if (passwordMatches) {
       return res.status(200).json({
         message: 'user login succesfully',
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       });
     }
   } catch (error) {
