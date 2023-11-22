@@ -19,3 +19,18 @@ export const RegisterSchema = z.object({
       .min(5, 'Password to short, it should be min 5 chars'),
   }),
 });
+
+export const LoginSchema = z.object({
+  body: z.object({
+    username: z
+      .string({
+        required_error: 'username Required',
+      })
+      .min(3),
+    password: z
+      .string({
+        required_error: 'password required',
+      })
+      .min(5, 'Password to short, it should be min 5 chars'),
+  }),
+});
