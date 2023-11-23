@@ -7,7 +7,13 @@ export type RegisterType = {
   imageUrl: string;
 };
 
-enum Role {
-  USER,
-  ADMIN,
+export enum Role {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
 }
+
+export type postType = {
+  bio: string;
+  imageUrl: string;
+  userId: string;
+};
