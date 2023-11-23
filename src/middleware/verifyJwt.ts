@@ -6,6 +6,7 @@ declare global {
   namespace Express {
     interface Request {
       user?: any;
+      roles?: any;
     }
   }
 }
@@ -27,8 +28,9 @@ export const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
       });
     }
 
-    if (decoded && typeof decoded === 'object' && 'id' in decoded) {
+    if (decoded && typeof decoded === 'object' && 'id' in decoded && 'role' in decoded) {
       req.user = (decoded as jwt.JwtPayload).id;
+      req.roles = (decoded as jwt.JwtPayload).role;
     }
     next();
   });
