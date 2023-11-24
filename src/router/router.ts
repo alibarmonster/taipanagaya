@@ -6,8 +6,6 @@ import validateLogin from '../middleware/ValidateLogin';
 import { verifyJwt } from '../middleware/verifyJwt';
 import * as userController from '../controller/user';
 import * as postController from '../controller/post';
-import { verifyRoles } from '../middleware/verifyRoles';
-import { Role } from '../utils';
 import { upload } from '../middleware/multer';
 import { uploadWithCloudinary } from '../helpers/cloudinary';
 
@@ -27,6 +25,7 @@ router.put(
   uploadWithCloudinary,
   userController.updateUserById,
 );
+router.delete('/users/:id', userController.deleteUserById);
 
 // Posts router
 router.post('/posts', verifyJwt, postController.createPost);

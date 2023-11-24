@@ -128,4 +128,33 @@ const getAllUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getUserById, getAllUser, updateUserById };
+const deleteUserById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const deleteUser = prisma.user.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    const deletePost = prisma.post.deleteMany({
+      where: {
+        userId: id,
+      },
+    });
+    const deleteProfile = prisma.profile.deleteMany({
+      where: {
+        authorId: id,
+      },
+    });
+
+    const transaction = await prisma.$transaction([deleteProfile, deletePost, deleteUser]);
+    return res.status(200).json({
+      message: 'Delete Successfull',
+    });
+  } catch (error) {
+    return res.json(error);
+  }
+};
+export { getUserById, getAllUser, updateUserById, deleteUserById };
