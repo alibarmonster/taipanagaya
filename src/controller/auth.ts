@@ -91,7 +91,7 @@ const login = async (req: Request, res: Response) => {
     const secretKey: Secret = String(process.env.ACCESS_TOKEN_KEY);
     const refreshKey: Secret = String(process.env.REFRESH_TOKEN_KEY);
     const accessToken = jwt.sign(existingUsername, secretKey, {
-      expiresIn: '20s',
+      expiresIn: '20h',
     });
 
     const refreshToken = jwt.sign(existingUsername, refreshKey, {

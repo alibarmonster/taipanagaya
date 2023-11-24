@@ -8,6 +8,8 @@ import * as userController from '../controller/user';
 import * as postController from '../controller/post';
 import { verifyRoles } from '../middleware/verifyRoles';
 import { Role } from '../utils';
+import { upload } from '../middleware/multer';
+import { uploadWithCloudinary } from '../helpers/cloudinary';
 
 const router: Router = express.Router();
 
@@ -18,9 +20,13 @@ router.post('/login', validateLogin(LoginSchema), authController.login);
 //user router
 router.get('/users/:id', userController.getUserById);
 router.get('/users', userController.getAllUser);
-router.get('/alibar', verifyJwt, verifyRoles(Role.ADMIN), async (req, res: Response) => {
-  return res.json('only admin can access this resource');
-});
+router.put(
+  '/users/:id',
+  verifyJwt,
+  upload.single('imageUrl'),
+  uploadWithCloudinary,
+  userController.updateUserById,
+);
 
 // Posts router
 router.post('/posts', verifyJwt, postController.createPost);
