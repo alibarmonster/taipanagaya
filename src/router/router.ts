@@ -28,5 +28,12 @@ router.put(
 router.delete('/users/:id', userController.deleteUserById);
 
 // Posts router
-router.post('/posts', verifyJwt, postController.createPost);
+router.post(
+  '/posts',
+  verifyJwt,
+  upload.single('imageUrl'),
+  uploadWithCloudinary,
+  postController.createPost,
+);
+
 export default router;

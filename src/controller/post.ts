@@ -5,13 +5,19 @@ import { postType } from 'utils';
 const prisma = new PrismaClient();
 
 const createPost = async (req: Request, res: Response) => {
-  const { bio, imageUrl }: postType = req.body;
+  const { bio, imageUrl } = req.body;
   const userId = req.user;
+
+  let imageUrl_temp = imageUrl;
+
+  if (!imageUrl_temp) {
+    imageUrl_temp = '';
+  }
 
   const createdPost = await prisma.post.create({
     data: {
       bio: bio,
-      imageUrl: imageUrl,
+      imageUrl: imageUrl_temp,
       userId: userId,
     },
   });
