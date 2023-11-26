@@ -35,5 +35,7 @@ router.post(
   uploadWithCloudinary,
   postController.createPost,
 );
+router.get('/posts/:id', postController.getPostById);
+router.get('/posts', postController.getAllPost);
 
 export default router;

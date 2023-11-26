@@ -30,4 +30,39 @@ const createPost = async (req: Request, res: Response) => {
   });
 };
 
-export { createPost };
+const getAllPost = async (req: Request, res: Response) => {
+  try {
+    const allPost = await prisma.post.findMany();
+
+    return res.status(200).json({
+      message: 'get all User',
+      data: allPost,
+      total: allPost.length,
+    });
+  } catch (error) {
+    return res.json(error);
+  }
+};
+
+const getPostById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const hasPost = await prisma.post.findFirst({
+      where: {
+        id: id,
+      },
+    });
+
+    return res.status(200).json({
+      message: 'success get Post',
+      data: {
+        hasPost,
+      },
+    });
+  } catch (error) {
+    return res.json(error);
+  }
+};
+
+export { createPost, getPostById, getAllPost };
