@@ -1,4 +1,5 @@
 import { NAV_LINKS } from '@/types';
+import { Button } from '@/material-ui/index';
 import Link from 'next/link';
 
 const Navbar = () => {
@@ -7,7 +8,7 @@ const Navbar = () => {
       <div className='w-full h-full bg-slate-500 flex items-center justify-around'>
         <a
           href='/'
-          className='text-2xl text-white font-bold p-2'
+          className='text-2xl text-black font-bold p-2'
         >
           TaipaNagaya
         </a>
@@ -17,14 +18,16 @@ const Navbar = () => {
             <Link
               href={link.href}
               key={link.key}
-              className='text-gray-50 font-[400] text-[16px] cursor-pointer transition-all hover:font-semibold'
+              className='text-gray-800 font-[400] text-[16px] cursor-pointer transition-all hover:font-semibold'
             >
               {link.label}
             </Link>
           ))}
         </ul>
 
-        <button>Daftar</button>
+        <Link href='/daftar'>
+          <Button className='rounded-full'>Daftar</Button>
+        </Link>
       </div>
     </nav>
   );

@@ -4,4 +4,5 @@ export const NAV_LINKS = [
   { href: '/', key: 'paket kegiatan', label: 'Paket Kegiatan' },
   { href: '/', key: 'lokasi', label: 'Lokasi' },
   { href: '/', key: 'about us', label: 'About Us' },
+  { href: '/', key: 'store', label: 'Store' },
 ];
