@@ -1,5 +1,6 @@
+import FaqWrap from '@/components/FaqWrap';
 import Hero from '@/components/Hero';
-import FaqSection from '@/components/faq';
+import Footer from '@/components/footer';
 import Pricing from '@/components/pricing';
 
 const Home = () => {
@@ -7,7 +8,8 @@ const Home = () => {
     <>
       <Hero />
       <Pricing />
-      <FaqSection />
+      <FaqWrap />
+      <Footer />
     </>
   );
 };
