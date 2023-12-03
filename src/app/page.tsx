@@ -1,8 +1,15 @@
 import Hero from '@/components/Hero';
-import Navbar from '@/components/Navbar';
+import FaqSection from '@/components/faq';
+import Pricing from '@/components/pricing';
 
 const Home = () => {
-  return <Hero />;
+  return (
+    <>
+      <Hero />
+      <Pricing />
+      <FaqSection />
+    </>
+  );
 };
 
 export default Home;

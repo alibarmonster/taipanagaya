@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import { RegisterSchema, TSignUpSchema } from '@/lib/types';
+import { RegisterSchema, TLoginSchema, TSignUpSchema } from '@/lib/types';
 import { Card, Input, Checkbox, Button, Typography } from '@/material-ui/index';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
@@ -18,6 +18,12 @@ const Form = () => {
     resolver: zodResolver(RegisterSchema),
   });
 
+  // const {
+  //   login,
+  //   handleSubmit,
+  //   formState: { errors },
+  // };
+
   const [variant, setVariant] = useState('register');
 
   const toggleVariant = useCallback(() => {
@@ -33,7 +39,13 @@ const Form = () => {
     }
   };
 
-  const submitLogin = async (data) => {};
+  const submitLogin = async (data: TLoginSchema) => {
+    try {
+      const response = await axios.post(`${base_url}login`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Card
