@@ -35,7 +35,7 @@ const getAllPost = async (req: Request, res: Response) => {
     const allPost = await prisma.post.findMany();
 
     return res.status(200).json({
-      message: 'get all User',
+      message: 'get all Post',
       data: allPost,
       total: allPost.length,
     });
@@ -65,4 +65,47 @@ const getPostById = async (req: Request, res: Response) => {
   }
 };
 
-export { createPost, getPostById, getAllPost };
+const deletePostById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const deletePost = await prisma.post.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return res.status(200).json({
+      message: 'success post delete',
+    });
+  } catch (error) {
+    return res.json(error);
+  }
+};
+
+const getPostsByUsername = async (req: Request, res: Response) => {
+  try {
+    const { username } = req.params;
+    const userWithPost = await prisma.user.findFirst({
+      where: {
+        username: username,
+      },
+      include: {
+        posts: true,
+      },
+    });
+
+    if (!userWithPost) {
+      return res.status(404).json({
+        message: 'User not found',
+      });
+    }
+    return res.status(200).json({
+      message: 'success get userid with all post',
+      result: userWithPost,
+    });
+  } catch (error) {
+    return res.json(error);
+  }
+};
+
+export { createPost, getPostById, getAllPost, deletePostById, getPostsByUsername };

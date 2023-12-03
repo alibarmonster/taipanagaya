@@ -8,6 +8,8 @@ import * as userController from '../controller/user';
 import * as postController from '../controller/post';
 import { upload } from '../middleware/multer';
 import { uploadWithCloudinary } from '../helpers/cloudinary';
+import { verifyRoles } from '../middleware/verifyRoles';
+import { Role } from '../utils';
 
 const router: Router = express.Router();
 
@@ -16,8 +18,8 @@ router.post('/register', validateRegister(RegisterSchema), authController.regist
 router.post('/login', validateLogin(LoginSchema), authController.login);
 
 //user router
-router.get('/users/:id', userController.getUserById);
-router.get('/users', userController.getAllUser);
+router.get('/users/:id', verifyJwt, userController.getUserById);
+router.get('/users', verifyJwt, verifyRoles(Role.ADMIN), userController.getAllUser);
 router.put(
   '/users/:id',
   verifyJwt,
@@ -25,7 +27,7 @@ router.put(
   uploadWithCloudinary,
   userController.updateUserById,
 );
-router.delete('/users/:id', userController.deleteUserById);
+router.delete('/users/:id', verifyJwt, userController.deleteUserById);
 
 // Posts router
 router.post(
@@ -35,7 +37,11 @@ router.post(
   uploadWithCloudinary,
   postController.createPost,
 );
-router.get('/posts/:id', postController.getPostById);
-router.get('/posts', postController.getAllPost);
+router.get('/posts/:id', verifyJwt, postController.getPostById);
+router.get('/posts', verifyJwt, verifyRoles(Role.ADMIN), postController.getAllPost);
+router.delete('/posts/:id', verifyJwt, postController.deletePostById);
 
+router.get('/users/:username/posts', postController.getPostsByUsername);
+
+//user with post
 export default router;
