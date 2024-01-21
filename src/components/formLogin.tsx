@@ -1,25 +1,25 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import { RegisterSchema, TSignUpSchema } from '@/lib/types';
-import { Card, Input, Button, Typography } from '@/material-ui/index';
+import { LoginSchema, TLoginSchema } from '@/lib/types';
+import { Card, Input, Checkbox, Button, Typography } from '@/material-ui/index';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
-const Form = () => {
+const FormLogin = () => {
   const base_url = process.env.NEXT_PUBLIC_BASE_URL;
+  axios.defaults.withCredentials = true;
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TSignUpSchema>({
-    resolver: zodResolver(RegisterSchema),
+  } = useForm<TLoginSchema>({
+    resolver: zodResolver(LoginSchema),
   });
 
-  const submitRegister = async (data: TSignUpSchema) => {
+  const submitLogin = async (data: TLoginSchema) => {
     try {
-      const response = await axios.post(`${base_url}register`, data);
+      const response = await axios.post(`${base_url}login`, data);
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -36,12 +36,12 @@ const Form = () => {
         color='blue-gray'
         className='text-center'
       >
-        Register
+        Sign In
       </Typography>
 
       <form
         className='mt-5 mb-2 w-80 max-w-screen-lg sm:w-96'
-        onSubmit={handleSubmit(submitRegister)}
+        onSubmit={handleSubmit(submitLogin)}
       >
         <div className='mb-1 flex flex-col gap-6'>
           <Typography
@@ -67,30 +67,6 @@ const Form = () => {
             <p className='text-xs italic text-red-500 mt-2'>{errors.username?.message}</p>
           )}
 
-          <div className='flex flex-col gap-5'>
-            <Typography
-              variant='h6'
-              color='blue-gray'
-              className='-mb-3'
-            >
-              Your Email
-            </Typography>
-            <Input
-              size='lg'
-              placeholder='name@mail.com'
-              className={` !border-t-blue-gray-200 focus:!border-t-gray-900 ${
-                errors.email && 'border-red-500'
-              } rounded appearance-none focus:outline-none focus:shadow-outline`}
-              labelProps={{
-                className: 'before:content-none after:content-none',
-              }}
-              {...register('email')}
-              crossOrigin={undefined}
-            />
-            {errors.email && (
-              <p className='text-xs italic text-red-500 mt-2'>{errors.email?.message}</p>
-            )}
-          </div>
           <Typography
             variant='h6'
             color='blue-gray'
@@ -120,18 +96,18 @@ const Form = () => {
           fullWidth
           type='submit'
         >
-          Sign Up
+          Login
         </Button>
         <Typography
           color='gray'
           className='mt-4 text-center font-normal'
         >
-          Already have an account?
+          First Time using TaipaNagaya?
           <Link
-            href='/login'
+            href='/daftar'
             className='font-medium text-gray-900 cursor-pointer'
           >
-            Login
+            Create an account
           </Link>
         </Typography>
       </form>
@@ -139,4 +115,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default FormLogin;
